@@ -1,0 +1,58 @@
+# now just load the best parameters we got from the training script and predict
+
+def main():
+
+#creating a custom pipeline
+
+    bestParameters = pickle.load(open("../../params/besties.pkl","rb"))
+    
+    
+    pipeline = Pipeline([
+    ('vect', TfidfVectorizer(
+                             stop_words='english',
+                             sublinear_tf=True
+                             max_df=bestParameters['vect__max_df'],
+                             ngram_range=bestParameters['vect__ngram_range'],
+                             use_idf=bestParameters['vect__use_idf']
+                             )
+    ),
+    ('clf', LogisticRegression(C=bestParameters['clf__C']))
+    ])
+
+#still have to provide a parameters array due to GridSearchCV syntax. so just keep it empty this time
+
+    parameters = {}
+
+#preparing the training data. we have to do this again as our new pipeline must be trained.
+
+    traindf = pd.read_json('../../data/train.json')
+
+    traindf['ingredients_clean_string'] = [' , '.join(z).strip() for z in traindf['ingredients']]  
+
+    traindf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in traindf['ingredients']]       
+
+    X, y = traindf['ingredients_string'], traindf['cuisine'].as_matrix()
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7)
+    
+    
+    #initializing GridSearchCV to try out all the options that i have provided above
+
+    grid_search = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
+    grid_search.fit(X_train, y_train)
+
+# now our optimal pipeline has been trained and we are ready for predicting over the test data
+
+# preapring the test data
+
+    testdf = pd.read_json('../../data/test.json')
+
+    testf['ingredients_clean_string'] = [' , '.join(z).strip() for z in traindf['ingredients']]  
+
+    testdf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in traindf['ingredients']]       
+
+#and finally we predict
+
+    predictions = grid_search.predict(testdf['ingredients_string'])
+    
+    # now we just store these predictions as csv and submit to kaggle
