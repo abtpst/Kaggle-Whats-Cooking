@@ -44,8 +44,7 @@ def main():
     bestParameters = grid_search.best_estimator_.get_params()
     for param_name in sorted(parameters.keys()):
         print ('\t %s: %r' % (param_name, bestParameters[param_name]))
-        res.write('\t %s: %r\n' % (param_name, bestParameters[param_name]))
-
+        
 #and finally i can predict
 
     predictions = grid_search.predict(X_test)
