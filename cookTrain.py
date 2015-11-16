@@ -1,13 +1,13 @@
 def main():
 
-#creating a custom pipeline
+# creating a custom pipeline
 
     pipeline = Pipeline([
     ('vect', TfidfVectorizer(stop_words='english',sublinear_tf=True)),
     ('clf', LogisticRegression())
     ])
 
-#setting the possibilities for parameters. i have found this extremely useful
+# setting the possibilities for parameters. i have found this extremely useful
 
     parameters = {
         'vect__max_df': (0.25, 0.5, 0.6, 0.7, 1.0),
@@ -16,7 +16,7 @@ def main():
         'clf__C': (0.1, 1, 10, 20, 30)
     }
 
-#preparing the training data
+# preparing the training data
 
     traindf = pd.read_json('../../data/train.json')
 
@@ -34,18 +34,18 @@ def main():
     grid_search = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
     grid_search.fit(X_train, y_train)
 
-#now i print the best score. this is super useful!
+# now i print the best score. this is super useful!
 
     print ('best score: %0.3f' % grid_search.best_score_)
     print ('best parameters set:')
 
-#not only that, i can also get the best parameters in a nice map.
+# not only that, i can also get the best parameters in a nice map.
 
     bestParameters = grid_search.best_estimator_.get_params()
     for param_name in sorted(parameters.keys()):
         print ('\t %s: %r' % (param_name, bestParameters[param_name]))
         
-#and finally i can predict
+# and finally i can predict
 
     predictions = grid_search.predict(X_test)
     print ('Accuracy:', accuracy_score(y_test, predictions))
