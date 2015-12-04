@@ -1,3 +1,8 @@
+'''
+Created on Dec 4, 2015
+
+@author: atomar
+'''
 import pandas as pd
 
 import pickle
@@ -38,19 +43,19 @@ def main():
     parameters = {}
     
     gridSearchTS = GridSearchCV(pip,parameters,n_jobs=3, verbose=1, scoring='accuracy')
-    gridSearchTS.fit(X_train, y_train)
+    gridSearchTS.fit(Xtrain, ytrain)
     
-    predictions = grid_searchTS.predict(X_test)
+    predictions = gridSearchTS.predict(Xtest)
     
-    print ('Accuracy:', accuracy_score(y_test, predictions))
-    print ('Confusion Matrix:', confusion_matrix(y_test, predictions))
-    print ('Classification Report:', classification_report(y_test, predictions))
+    print ('Accuracy:', accuracy_score(ytest, predictions))
+    print ('Confusion Matrix:', confusion_matrix(ytest, predictions))
+    print ('Classification Report:', classification_report(ytest, predictions))
     
     testdf = pd.read_json("../../data/test.json") 
    
     testdf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in testdf['ingredients']]       
 
-    predictions=grid_searchTS.predict(testdf['ingredients_string'])
+    predictions=gridSearchTS.predict(testdf['ingredients_string'])
     
     testdf['cuisine'] = predictions
     
