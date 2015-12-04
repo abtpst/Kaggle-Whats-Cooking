@@ -26,7 +26,7 @@ def main():
 
     X, y = traindf['ingredients_string'], traindf['cuisine'].as_matrix()
     
-    Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, trainSize=0.7)
+    Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size=0.7)
     
     pip = Pipeline([
     ('vect', TfidfVectorizer(
