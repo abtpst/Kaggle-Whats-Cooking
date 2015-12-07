@@ -50,9 +50,9 @@ def main():
     pickle.dump(bestParameters,open("../../picks/bestParams.pkl","wb"))
     
     predictions = gridSearch.predict(Xtest)
-    print ('Accuracy:', accuracy_score(y_test, predictions))
-    print ('Confusion Matrix:', confusion_matrix(y_test, predictions))
-    print ('Classification Report:', classification_report(y_test, predictions))
+    print ('Accuracy:', accuracy_score(ytest, predictions))
+    print ('Confusion Matrix:', confusion_matrix(ytest, predictions))
+    print ('Classification Report:', classification_report(ytest, predictions))
     
 if __name__ == '__main__':
     main()
