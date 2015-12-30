@@ -21,7 +21,7 @@ from sklearn.grid_search import GridSearchCV
 def getPipeline():
 	
     # Load best set of parameters
-    bestParameters = pickle.load(open("../../picks/bestParams.pkl","rb"))
+    bestParameters = pickle.load(open("bestParams.pkl","rb"))
     # Create sklearn Pipeline
     pip = Pipeline([
     ('vect', TfidfVectorizer(
@@ -46,7 +46,7 @@ def main():
     # Create gridSearchClassifier from optimal Pipeline
     gridSearchClassifier = GridSearchCV(pip,parameters,n_jobs=3, verbose=1, scoring='accuracy')
     # Load Test Set
-    testdf = pd.read_json("../../data/test.json") 
+    testdf = pd.read_json("test.json") 
     # Remove everything but alphabets and then Lemmatize. Also, remove extra whitespace
     testdf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in testdf['ingredients']]       
     # Predict Cuisine on Test Set
