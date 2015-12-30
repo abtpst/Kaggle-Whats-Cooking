@@ -7,7 +7,7 @@ from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.pipeline import Pipeline
-from sklearn.gridSearchClassifier import gridSearchClassifierCV
+from sklearn.grid_search import GridSearchCV
 
 from IPython.display import Image
 
@@ -46,7 +46,7 @@ def getBestParameters(pipeline,parameters):
     # Split into Training and Validation Sets
     Xtrain, Xvalidate, ytrain, yValidate = train_test_split(X, y, trainSize=0.7)
     # Initialize gridSearchClassifierCV Classifier with parameters
-    gridSearchClassifier = gridSearchClassifierCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
+    gridSearchClassifier = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
     # Fit/train the gridSearchClassifier on Training Set
 	gridSearchClassifier.fit(Xtrain, ytrain)
     # Calculate best score for gridSearchClassifier
