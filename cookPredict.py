@@ -35,9 +35,9 @@ def getPipeline():
     ('clf', LogisticRegression(C=bestParameters['clf__C']))
     ])
     # We create this empty dict as it is required for the syntax of GridSearchCV
-	parameters = {}
-	# Return sklearn Pipeline and empty dict
-	return pip, parameters
+    parameters = {}
+    # Return sklearn Pipeline and empty dict
+    return pip, parameters
 
 def main():
    
