@@ -16,18 +16,13 @@ from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
 
-def main():
-   
-    bestParameters = pickle.load(open("../../picks/bestParams.pkl","rb"))
-    
-    traindf = pd.read_json('../../data/train.json')
-    
-    traindf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in traindf['ingredients']]       
-
-    X, y = traindf['ingredients_string'], traindf['cuisine'].as_matrix()
-    
-    Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size=0.7)
-    
+# This method creates an optimal sklearn Pipeline as per the best set of
+# parameters obtained in cookTrain.py
+def getPipeline():
+	
+	# Load best set of parameters
+	bestParameters = pickle.load(open("../../picks/bestParams.pkl","rb"))
+    # Create sklearn Pipeline
     pip = Pipeline([
     ('vect', TfidfVectorizer(
                              stop_words='english',
@@ -39,28 +34,26 @@ def main():
                                
     ('clf', LogisticRegression(C=bestParameters['clf__C']))
     ])
-    
-    parameters = {}
-    
-    gridSearchTS = GridSearchCV(pip,parameters,n_jobs=3, verbose=1, scoring='accuracy')
-    gridSearchTS.fit(Xtrain, ytrain)
-    
-    predictions = gridSearchTS.predict(Xtest)
-    
-    print ('Accuracy:', accuracy_score(ytest, predictions))
-    print ('Confusion Matrix:', confusion_matrix(ytest, predictions))
-    print ('Classification Report:', classification_report(ytest, predictions))
-    
-    testdf = pd.read_json("../../data/test.json") 
-   
-    testdf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in testdf['ingredients']]       
+    # We create this empty dict as it is required for the syntax of GridSearchCV
+	parameters = {}
+	# Return sklearn Pipeline and empty dict
+	return pip, parameters
 
-    predictions=gridSearchTS.predict(testdf['ingredients_string'])
-    
+def main():
+   
+    # Get optimal sklearn Pipeline
+    pip, parameters = getPipeline()
+    # Create gridSearchClassifier from optimal Pipeline
+    gridSearchClassifier = GridSearchCV(pip,parameters,n_jobs=3, verbose=1, scoring='accuracy')
+    # Load Test Set
+    testdf = pd.read_json("../../data/test.json") 
+	# Remove everything but alphabets and then Lemmatize. Also, remove extra whitespace
+    testdf['ingredients_string'] = [' '.join([WordNetLemmatizer().lemmatize(re.sub('[^A-Za-z]', ' ', line)) for line in lists]).strip() for lists in testdf['ingredients']]       
+	# Predict Cuisine on Test Set
+    predictions=gridSearchClassifier.predict(testdf['ingredients_string'])
+    # Create new column in Test dataframe
     testdf['cuisine'] = predictions
-    
-    print(testdf.info())
-    
+    # Save the dataframe with the new column
     testdf.to_csv("submission.csv",index=False,columns=['id','cuisine'])
     
 if __name__ == '__main__':
