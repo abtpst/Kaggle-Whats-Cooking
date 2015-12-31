@@ -5,7 +5,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.cross_validation import train_test_split
-from sklearn.metrics.metrics import classification_report, accuracy_score, confusion_matrix
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
 
@@ -44,7 +44,7 @@ def getBestParameters(pipeline,parameters):
     # Create learning matrix
     X, y = traindf['ingredients_string'], traindf['cuisine'].as_matrix()
     # Split into Training and Validation Sets
-    Xtrain, Xvalidate, ytrain, yValidate = train_test_split(X, y, trainSize=0.7)
+    Xtrain, Xvalidate, ytrain, yValidate = train_test_split(X, y, train_size=0.7)
     # Initialize gridSearchClassifierCV Classifier with parameters
     gridSearchClassifier = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
     # Fit/train the gridSearchClassifier on Training Set
