@@ -1,0 +1,5 @@
+best parameters set:
+	 clf__C: 20
+	 vect__max_df: 0.6
+	 vect__ngram_range: (1, 2)
+	 vect__use_idf: True
