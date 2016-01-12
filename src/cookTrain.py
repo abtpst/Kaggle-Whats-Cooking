@@ -5,11 +5,9 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.cross_validation import train_test_split
-from sklearn.metrics.metrics import classification_report, accuracy_score, confusion_matrix
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
-
-from IPython.display import Image
 
 # This method defines the sklearn Pipeline. It can be modified to change the Pipeline components.
 # For simplicity, I am just returning a hard-coded value.
