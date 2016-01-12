@@ -4,7 +4,6 @@ Created on Dec 4, 2015
 @author: atomar
 '''
 import pandas as pd
-
 import pickle
 import re
 from sklearn.cross_validation import train_test_split
@@ -15,8 +14,10 @@ from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
 
-# This method creates an optimal sklearn Pipeline as per the best set of
-# parameters obtained in cookTrain.py
+'''
+This method creates an optimal sklearn Pipeline as per the best set of
+parameters obtained in cookTrain.py
+'''
 def getPipeline():
 	
     # Load best set of parameters

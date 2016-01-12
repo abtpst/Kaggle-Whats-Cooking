@@ -8,8 +8,10 @@ from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.grid_search import GridSearchCV
 
-# This method defines the sklearn Pipeline. It can be modified to change the Pipeline components.
-# For simplicity, I am just returning a hard-coded value.
+'''
+This method defines the sklearn Pipeline. It can be modified to change the Pipeline components.
+For simplicity, I am just returning a hard-coded value.
+'''
 def getPipeline():
 
     return Pipeline([
@@ -17,8 +19,10 @@ def getPipeline():
     ('clf', LogisticRegression())
     ])
 
-# This method specifies the parameter options for sklearn Pipeline. It can be modified to change the parameter options.
-# For simplicity, I am just returning a hard-coded value.
+'''
+This method specifies the parameter options for sklearn Pipeline. It can be modified to change the parameter options.
+For simplicity, I am just returning a hard-coded value.
+'''
 def getParameters():
 
     return {
@@ -27,7 +31,9 @@ def getParameters():
         'vect__use_idf': [True, False],
         'clf__C': [0.1, 1, 10, 20, 30]
     }
-
+'''
+This method returns a GridSearchCV object comprising of an sklearn Pipeline and its corresponding parameter set
+'''
 def getGridSearchCv(pipeline,parameters):
     
     return GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')

@@ -44,7 +44,7 @@ Here is the flow of events
 5.  Evaluate metrics and scores for the pipeline's `best_estimator`
 6.  Document the prediction results on the validation set and create a `pandas` `DataFrame` for feedback 
 7.  Extract the 'mistakes' from the validation set predictions and re-train the pipeline. This is our feedback loop.
-8.  Once again, make predictions on the validation set and evaluate metrics and scores for the pipeline's `best_estimator`
+8.  After incorporating the mistakes into the training data, recalculate training and validation sets. Finally, make predictions on the new validation set and evaluate metrics and scores for the pipeline's `best_estimator`
 9.  Store the best set of parameters
 
 ### Predict
