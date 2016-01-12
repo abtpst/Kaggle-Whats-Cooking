@@ -48,18 +48,18 @@ def getBestParameters(pipeline,parameters):
     # Initialize gridSearchClassifierCV Classifier with parameters
     gridSearchClassifier = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=1, scoring='accuracy')
     # Fit/train the gridSearchClassifier on Training Set
-	gridSearchClassifier.fit(Xtrain, ytrain)
+    gridSearchClassifier.fit(Xtrain, ytrain)
     # Calculate best score for gridSearchClassifier
     print ('best score: %0.3f' % gridSearchClassifier.best_score_)
     # Calculate best set of parameters for gridSearchClassifier
-	bestParameters = gridSearchClassifier.best_estimator_.get_params()
+    bestParameters = gridSearchClassifier.best_estimator_.get_params()
     # Display best set of parameters
-	print ('best parameters set:')
+    print ('best parameters set:')
     for paramName in sorted(parameters.keys()):
         print ('\t %s: %r' % (paramName, bestParameters[paramName]))
         
-	# Evaluate performance of gridSearchClassifier on Validation Set
-	predictions = gridSearchClassifier.predict(Xvalidate)
+    # Evaluate performance of gridSearchClassifier on Validation Set
+    predictions = gridSearchClassifier.predict(Xvalidate)
     print ('Accuracy:', accuracy_score(yValidate, predictions))
     print ('Confusion Matrix:', confusion_matrix(yValidate, predictions))
     print ('Classification Report:', classification_report(yValidate, predictions))
@@ -68,14 +68,14 @@ def getBestParameters(pipeline,parameters):
 	
 def main():
     
-	# Get Pipeline components
+    # Get Pipeline components
     pipeline = getPipeline()
     
     # Get parameter options for Pipeline components
     parameters = getParameters()
     
-	# Get best set of parameters and evaluate validation set accuracy
-	bestParameters = getBestParameters(pipeline,parameters)
+    # Get best set of parameters and evaluate validation set accuracy
+    bestParameters = getBestParameters(pipeline,parameters)
 	
     # Save best parameter set
     res = open("../../picks/res.txt", 'w')
@@ -83,7 +83,7 @@ def main():
     for paramName in sorted(parameters.keys()):
         res.write('\t %s: %r\n' % (paramName, bestParameters[paramName]))
     
-	pickle.dump(bestParameters,open("../../picks/bestParams.pkl","wb"))
+    pickle.dump(bestParameters,open("../../picks/bestParams.pkl","wb"))
     
 if __name__ == '__main__':
     main()
